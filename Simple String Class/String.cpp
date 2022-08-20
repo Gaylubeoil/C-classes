@@ -13,9 +13,9 @@ String::String(const String& other) {
 		std::bad_alloc exception;
 		throw (exception);
 	}
-	if (this->str != nullptr) {
-		delete[] this->str;
-	}
+	// if (this->str != nullptr) {
+	// 	delete[] this->str;
+	// }  /TODO
 	this->m_size = other.m_size;
 	this->str = new char[this->m_size + 1];
 	strcpy(this->str, other.str);
@@ -50,13 +50,22 @@ const bool String::includes(const String& search_value) const {
 	if (search_value.m_size > this->m_size)
 		return false;
 	char first_char = search_value.str[0];
-	for (int i = 0; i < m_size; ++i) {
+	for (size_t i = 0; i < m_size; ++i) {
 		if (str[i] == first_char) {
-			for (int j = 0; j < search_value.m_size; ++j) {
+			for (size_t j = 0; j < search_value.m_size; ++j) {
 				if (str[i++] != search_value.str[j]) {
 					break;
 				}
 			}
+			return true;
+		}
+	}
+	return false;
+}
+
+const bool String::includes(const char search_character) const {
+	for (size_t i = 0; i < this->m_size; ++i) {
+		if (this->str[i] == search_character) {
 			return true;
 		}
 	}
@@ -71,11 +80,11 @@ String& String::replace(const String& search_value, const String& replace_value)
 
 	char first_char = search_value.str[0];
 	char first_string[128] = { '\0', };
-	int first_index = 0, second_index = 0;
+	size_t first_index = 0, second_index = 0;
 	char second_string[128] = { '\0', };
-	for (int i = 0; i < m_size; ++i) {
+	for (size_t i = 0; i < m_size; ++i) {
 		if (str[i] == first_char) {
-			for (int j = 0; j < search_value.m_size; ++j) {
+			for (size_t j = 0; j < search_value.m_size; ++j) {
 				if (str[i++] != search_value.str[j]) {
 					i -= 2;
 					break;
@@ -110,7 +119,7 @@ const char& String::char_at(const size_t& index) const {
 }
 
 String& String::to_upper_case() {
-	for (int i = 0; i < this->m_size; ++i) {
+	for (size_t i = 0; i < this->m_size; ++i) {
 		if (str[i] >= 'a' && str[i] <= 'z') {
 			str[i] -= 32;
 		}
@@ -134,6 +143,11 @@ size_t String::last_index_of(const char& value) const {
 		}
 	}
 	return 0;
+}
+
+String* String::split(const char split_character) const {
+	//TODO for(size_t i = 0; i < )
+	return nullptr;
 }
 
 bool String::compare_str(const String& str1, const String& str2) const {
