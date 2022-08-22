@@ -113,5 +113,3 @@ inline Vector<Type>::~Vector() {
 	if (data != nullptr)
 		delete[] data;
 }
-
-

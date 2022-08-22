@@ -145,9 +145,37 @@ size_t String::last_index_of(const char& value) const {
 	return 0;
 }
 
-String* String::split(const char split_character) const {
-	//TODO for(size_t i = 0; i < )
-	return nullptr;
+void String::split(const char split_character, Vector<String>& returned) const {
+	char* current = new char[128](); // '()' sets all elements to 0;
+	size_t current_size = 0;
+	for (size_t i = 0; i < this->m_size; ++i) {
+		if (this->str[i] == split_character) {
+			String temp(current);
+			returned.push_back(temp);
+			current_size = 0;
+			delete[] current;
+			current = new char[128]();
+		}
+		else {
+			current[current_size++] = this->str[i];
+		}
+		if (i == this->m_size - 1) {
+			String temp(current);
+			returned.push_back(temp);
+			current_size = 0;
+		}
+	}
+	delete[] current;
+}
+
+int String::stoi() const {
+	int num = 0;
+	for (int i = (int)m_size - 1; i >=0; i--) {
+		int power = m_size - i - 1;
+		int t = str[i] - '0';
+		num += (std::pow(10, power) * t);
+	}
+	return num;
 }
 
 bool String::compare_str(const String& str1, const String& str2) const {
@@ -206,6 +234,11 @@ String& String::operator+=(const char* other) {
 
 	delete[] temp;
 	return *this;
+}
+
+char& String::operator[](const size_t index) const
+{
+	return this->str[index];
 }
 
 std::ostream& operator<<(std::ostream& os, const String& string) {
